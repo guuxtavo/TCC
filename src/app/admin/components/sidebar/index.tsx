@@ -5,6 +5,7 @@ import { TbReportSearch } from "react-icons/tb";
 import { IoIosHammer } from "react-icons/io";
 import { SiApachecouchdb } from "react-icons/si";
 import { LiaIndustrySolid } from "react-icons/lia";
+import { FaHandHoldingUsd } from "react-icons/fa";
 import Image from "next/image";
 import { useState } from 'react'
 import logoImg from "../../../../../public/Logo Hellen.png";
@@ -21,15 +22,18 @@ export function Sidebar() {
       <aside className="w-[22%] 2xl:w-[20%] h-screen bg-g-red-600 drop-shadow-xl ">
          <div className="w-full h-full flex flex-col">
             <div className="h-[10%] 2xl:h-[8%] flex justify-center items-center">
-               <Image
-                  className="mt-5 mx-auto hover"
-                  src={logoImg}
-                  alt="Logo do Site"
-                  width={150}
-                  height={120}
-                  quality={100}
-                  priority={true}
-               />
+               <Link href={"/admin"} >
+                  <Image
+                     className="mt-5 mx-auto hover"
+                     src={logoImg}
+                     alt="Logo do Site"
+                     width={150}
+                     height={120}
+                     quality={100}
+                     priority={true}
+                  />
+               </Link>
+
             </div>
 
             <section className="h-full pt-16">
@@ -40,21 +44,21 @@ export function Sidebar() {
                />
                {cadastrosOpen && (
                   <>
-                     <Link href={"/admin/register/emp"} >
-                        <SidebarButton 
-                        label="Funcionário" 
-                        icon={<IoIosHammer size={25} />} />
+                     <Link href={"/admin/register/worker"} >
+                        <SidebarButton
+                           label="Funcionário"
+                           icon={<IoIosHammer size={25} />} />
                      </Link>
                      <Link href={"/admin/register/product"} >
-                        <SidebarButton 
-                        label="Produto" 
-                        icon={<SiApachecouchdb size={25} />} />
+                        <SidebarButton
+                           label="Produto"
+                           icon={<SiApachecouchdb size={25} />} />
                      </Link>
                      <Link href={"/admin/register/workspace"} >
-                        <SidebarButton 
-                        label="Célula" 
-                        icon={<LiaIndustrySolid size={25} />}
-                        className={""}
+                        <SidebarButton
+                           label="Célula"
+                           icon={<LiaIndustrySolid size={25} />}
+                           className={""}
                         />
 
                      </Link>
@@ -69,9 +73,16 @@ export function Sidebar() {
                />
                {relatoriosOpen && (
                   <>
-                     <SidebarButton label="Funcionário" icon={<IoIosHammer size={25} />} />
-                     <SidebarButton label="Produto" icon={<SiApachecouchdb size={25} />} />
-                     <SidebarButton label="Célula" icon={<LiaIndustrySolid size={25} />} />
+                     <Link href={"/admin/report/workspace-report"} >
+                        <SidebarButton label="Células" icon={<LiaIndustrySolid size={25} />} />
+                     </Link>
+
+                     <Link href={"/admin/report/emp-report"} > 
+                        <SidebarButton label="Funcionários" icon={<IoIosHammer size={25} />} />
+                     </Link>
+
+                     <SidebarButton label="Produtos" icon={<SiApachecouchdb size={25} />} />
+                     <SidebarButton label="Produção" icon={<FaHandHoldingUsd size={25} />} />
                   </>
                )}
             </section>

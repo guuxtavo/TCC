@@ -23,10 +23,17 @@ module.exports = {
           "75%": { transform: "translateX(-10px)", opacity: "0.8" },
           "100%": { transform: "translateX(0px)", opacity: "1" },
         },
+        slideLeft: {
+          "0%": { transform: "translateX(50px)", opacity: "0" },
+          "50%": { transform: "translateX(40px)", opacity: "0.5" },
+          "75%": { transform: "translateX(20px)", opacity: "0.8" },
+          "100%": { transform: "translateX(0px)", opacity: "1" },
+        },
       },
       animation: {
         "slide-down": "slideDown 0.5s linear",
         "slide-right": "slideRight 0.5s linear",
+        "slide-left": "slide-left 0.5 linear",
       },
     },
   },
