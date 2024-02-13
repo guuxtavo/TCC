@@ -1,4 +1,5 @@
-import './globals.css';
+import { Providers } from '@/providers/providers';
+import '@/styles/globals.css'
 import type { Metadata } from 'next';
 // import { Poppins } from 'next/font/google';
 
@@ -11,13 +12,17 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Login',
-  description: 'Tela para realizar o login',
+  description: 'Tela de Login',
 }
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="pt-br" >
-      <body>{children}</body>
+      <body>
+        <Providers>
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }

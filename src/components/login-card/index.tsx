@@ -16,14 +16,7 @@ export const LoginCard = () => {
           <FormLogin />
         </div>
       </div>
-      {/* <Image
-              className="transform -rotate-12 absolute bottom-0 right-0 z-10 overflow-hidden animate-slide-right"
-              src={MascoteImg}
-              height={350}
-              quality={100}
-              alt="Imagem do mascote Hellen"
-              priority={true}
-            /> */}
+    
     </section>
    )
 }

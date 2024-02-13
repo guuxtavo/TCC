@@ -6,24 +6,28 @@ import { Metadata } from "next";
 
 
 export const metadata: Metadata = {
-  title: 'Login',
+  title: 'Tela de Admin',
   description: 'Tela para realizar o login',
 }
 
 
 const HomeAdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
+
     <main className="h-screen w-screen flex">
       <Sidebar />
       <div className="w-[80%] h-full">
         <div className="h-full flex flex-col" >
           <HeaderAdmin />
           <div className="w-full h-full flex justify-center relative overflow-hidden" >
-            {children}
+
+              {children}
+
             <Image
               className="transform -rotate-12 absolute bottom-0 right-0 z-10 overflow-hidden"
               src={MascoteImg}
-              height={380}
+              height={250}
+              width={180}
               quality={100}
               alt="Imagem do mascote Hellen"
               priority={true}
@@ -33,6 +37,7 @@ const HomeAdminLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
     </main>
+
   )
 }
 

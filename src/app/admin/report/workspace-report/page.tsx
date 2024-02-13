@@ -1,9 +1,13 @@
-import { Container } from "@/app/admin/components/container"
+import { Container } from "@/components/container"
+import Input from "@/components/input";
 
 const WorkspaceReport = () => {
    return (
          <Container>
-            <h1 className="text-2xl font-bold ">Relatório de Células</h1>
+               <div className="flex items-center justify-between px-2" >
+            <h1 className="font-bold text-3xl" >Relatório de Células</h1>
+            <Input placeholder="Pesquisar Célula" width="full" />
+         </div>
          </Container>
    )
 }

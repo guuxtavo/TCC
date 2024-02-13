@@ -1,15 +1,24 @@
+"use client"
 
-import { Container } from "./components/container";
+
+import { useAuth } from "@/contexts/auth";
+import { Container } from "../../components/container";
 
 export default function HomeAdmin() {
 
+   // const { user, logout } = useAuth();
+   const { nome } = useAuth();
+
+
    return (
 
-      // <Container>
-      //    <h1 className="text-3xl text-center font-bold mt-4" >TELA INICIAL</h1>
-      // </Container>
-      <>
-      </>
+      <Container>
+
+         <h2 className="font-bold text-center text-2xl ">Tela de Admin</h2>
+         <h2 className="font-bold text-center text-2xl " >Seja vem vindo(a) {nome}</h2>
+      </Container>
+
+
    )
 
 }
