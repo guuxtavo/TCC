@@ -16,6 +16,7 @@ import { Button } from "../../../../components/button";
 import { Container } from "../../../../components/container";
 import WorkerSelect from "../../components/workerSelect";
 import { WorkspaceService } from '@/services/api/workspace';
+import { useQuery } from 'react-query';
 
 const RegisterWorkspace = () => {
 
@@ -24,7 +25,8 @@ const RegisterWorkspace = () => {
    const [showModalMessage, setShowModalMessage] = useState(false);
    const [modalType, setModalType] = useState('');
    const [message, setMessage] = useState('');
-
+   const { data: availableWorkspace } = useQuery(['workers'], () => WorkspaceService.getAvailableWorkspace());
+   console.log(availableWorkspace)
    useEffect(() => {
       // Mostra a mensagem de sucesso por 3 segundos após o cadastro bem-sucedido
       if (showModalMessage) {
@@ -44,7 +46,14 @@ const RegisterWorkspace = () => {
    const handleFormSubmit = async (data: Workspace) => {
       try {
 
-         console.log(data)
+         if (availableWorkspace?.numerosIndisponiveis.includes(data.numero)) {
+            setShowModalMessage(true)
+            setModalType("error")
+            setMessage("Numero já cadastrado!")
+            console.log(availableWorkspace?.numerosIndisponiveis)
+            return;
+         }
+
          console.log("Entrou no onSubmit: " + JSON.stringify(data));
          const workspaceData = {
             numero: data.numero,
@@ -57,6 +66,8 @@ const RegisterWorkspace = () => {
 
          console.log(workspaceData)
          const response = await WorkspaceService.registerWorkspace(workspaceData)
+
+
 
          if (response) {
             setShowModalMessage(true)
@@ -104,7 +115,7 @@ const RegisterWorkspace = () => {
                <Input
                   error={errors.numero}
                   register={register}
-                  type="text"
+                  type="number"
                   name="numero"
                   placeholder="Numero"
                   label="Número da Célula"
@@ -125,22 +136,22 @@ const RegisterWorkspace = () => {
                   <div className="flex items-center gap-4">
                      <Image quality={100} priority={true} width={80} height={40} alt="Imagem do trabalhador"
                         src={worker1} />
-                     <WorkerSelect cargo="Armador" name="funcionario1" register={register} error={errors.funcionario1} />
+                     <WorkerSelect workers={availableWorkspace?.funcionarioArmador ?? []} cargo="Armador" name="funcionario1" register={register} error={errors.funcionario1} />
                   </div>
                   <div className="flex items-center gap-4">
                      <Image quality={100} priority={true} width={80} height={40} alt="Imagem do trabalhador"
                         src={worker2} />
-                     <WorkerSelect cargo="Acenteiro" name="funcionario2" register={register} error={errors.funcionario2} />
+                     <WorkerSelect workers={availableWorkspace?.funcionarioAcenteiro ?? []} cargo="Acenteiro" name="funcionario2" register={register} error={errors.funcionario2} />
                   </div>
                   <div className="flex items-center gap-4">
                      <Image quality={100} priority={true} width={80} height={40} alt="Imagem do trabalhador"
                         src={worker2} />
-                     <WorkerSelect cargo="Encosteiro" name="funcionario3" register={register} error={errors.funcionario3} />
+                     <WorkerSelect workers={availableWorkspace?.funcionarioEncosteiro ?? []} cargo="Encosteiro" name="funcionario3" register={register} error={errors.funcionario3} />
                   </div>
                   <div className="flex items-center gap-4">
                      <Image quality={100} priority={true} width={80} height={40} alt="Imagem do trabalhador"
                         src={worker1} />
-                     <WorkerSelect cargo="Final" name="funcionario4" register={register} error={errors.funcionario4} />
+                     <WorkerSelect workers={availableWorkspace?.funcionarioFinal ?? []} cargo="Final" name="funcionario4" register={register} error={errors.funcionario4} />
                   </div>
                </div>
 

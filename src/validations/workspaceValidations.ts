@@ -4,7 +4,7 @@ export const workspaceValidationSchema = Yup.object().shape({
    numero: Yup.number().transform((value, originalValue) => {
       const parsedValue = parseFloat(originalValue);
       return isNaN(parsedValue) ? undefined : parsedValue;
-   }).required("O campo 'Pontuacao' é obrigatório"),
+   }).required("O campo 'Numero' é obrigatório"),
 
    funcionario1: Yup.number().transform((value, originalValue) => {
       const parsedValue = parseFloat(originalValue);

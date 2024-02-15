@@ -63,6 +63,7 @@ export default function RegisterWorker() {
             cargo: data.cargo,
             role: data.role ? "ADMIN" : "USER",
             dataNascimento: data.dataNascimento,
+            primeiroAcesso: true,
          };
 
          const response = await WorkerService.registerWorker(formData);

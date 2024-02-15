@@ -21,6 +21,8 @@ const Input = ({ placeholder, label, width, type, name, register, error }: Input
   
     return `${ano}-${mes}-${dia}`;
   };
+
+  
   return (
     <div className="flex flex-col gap-2">
       {label && (

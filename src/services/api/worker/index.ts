@@ -10,6 +10,7 @@ export type RegisterWorker = {
    cargo: string;
    role?: string;
    dataNascimento: string,
+   primeiroAcesso: boolean,
 }
 
 

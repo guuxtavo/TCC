@@ -1,3 +1,4 @@
+import { AvailableWorkspace } from '@/types/AvailableWorkspace';
 import { api } from '../axiosConfig';
 import { CustomError } from "@/types/Error";
 
@@ -39,6 +40,28 @@ const registerWorkspace = async (workspaceData: WorkspaceRegister): Promise<IAut
    }
 };
 
+const getAvailableWorkspace = async (): Promise<AvailableWorkspace> => {
+   try {
+      console.log("entrou no getAvailableWorkspace")
+      const response = await api.get(`/celulas/disponivel`);
+      const data = response.data;
+
+      return data;
+   } catch (error: any) {
+      console.error(error);
+
+      if (error.response?.status === 400) {
+         const customError = {
+            message: error.response.data,
+            status: 400,
+         } as CustomError;
+         throw customError;
+      }
+
+      throw { message: 'Erro ao obter lista de funcionários.' } as CustomError;
+   }
+}
+
 export const WorkspaceService = {
-   registerWorkspace,
+   registerWorkspace, getAvailableWorkspace
 };
