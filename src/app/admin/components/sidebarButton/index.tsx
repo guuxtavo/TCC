@@ -30,7 +30,7 @@ export const SidebarButton = ({ label, onClick, icon }: SidebarButtonProps) => {
    return (
       <div
          onClick={onClick}
-         className={`w-full h-[10%] 2xl:h-[9%] text-xl text-white font-extrabold flex items-center gap-12 hover:bg-red-900  hover:cursor-pointer ${label === "Cadastros" || label === "Relatórios" ? " pl-8 border-y border-slate-300" : "h-[9%] text-lg transition-all ease-in-out hover:scale-110 pl-16 animate-slide-right duration-500"
+         className={`w-full h-[10%] 2xl:h-[8%] text-xl text-white font-extrabold flex items-center gap-12 hover:bg-red-900  hover:cursor-pointer ${label === "Cadastros" || label === "Relatórios" ? " pl-8 border-y border-slate-300" : "h-[9%] text-lg transition-all ease-in-out hover:scale-110 pl-16 animate-slide-right duration-500"
             }`}>
          {icon}
          {label}

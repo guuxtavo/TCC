@@ -84,7 +84,10 @@ export function Sidebar() {
                         <SidebarButton label="Produtos" icon={<SiApachecouchdb size={25} />} />
                      </Link>
 
-                     <SidebarButton label="Produção" icon={<FaHandHoldingUsd size={25} />} />
+                     <Link href={"/admin/report/production-report"} >
+                        <SidebarButton label="Produção" icon={<FaHandHoldingUsd size={25} />} />
+                     </Link>
+
                   </>
                )}
             </section>

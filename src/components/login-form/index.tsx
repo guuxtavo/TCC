@@ -105,7 +105,7 @@ export function FormLogin() {
 
             {errors.senha && <span className="text-red-600 text-base font-bold">{errors.senha?.message}</span>}
 
-            <div className="mx-auto 2xl:mt-6" >
+            <div className="mx-auto" >
                <button
                   type="submit"
                   className="px-16 py-3 w-60  rounded-3xl border-2 border-g-red-600 text-red-950 font-extrabold text-md 2xl:text-lg hover:bg-g-red-600 hover:text-white transition-all duration-200"
