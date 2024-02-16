@@ -6,7 +6,7 @@ const ProductionReport = () => {
       <Container >
          <div className="flex items-center justify-between px-2" >
             <h1 className="font-bold text-3xl" >Relatório de Produção</h1>
-            <Search />
+            <Search placeholder="Pesquise a produção" />
          </div>
       </Container>
       
