@@ -2,24 +2,28 @@
 
 import { FiLayers } from "react-icons/fi";
 import { TbReportSearch } from "react-icons/tb";
-import { IoIosHammer } from "react-icons/io";
+import { IoIosLogOut } from "react-icons/io";
+import { FaPersonDigging } from "react-icons/fa6";
 import { SiApachecouchdb } from "react-icons/si";
-import { LiaIndustrySolid } from "react-icons/lia";
+import { MdOutlineConstruction } from "react-icons/md";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import Image from "next/image";
 import { useState } from 'react'
 import logoImg from "../../../../../public/Logo Hellen.png";
 import { SidebarButton } from "../sidebarButton";
 import Link from "next/link";
+import { useAuth } from "@/contexts/auth";
 
 
 export function Sidebar() {
+   ""
 
+   const { logout } = useAuth()
    const [cadastrosOpen, setCadastrosOpen] = useState(false);
    const [relatoriosOpen, setRelatoriosOpen] = useState(false);
 
    return (
-      <aside className="w-[22%] 2xl:w-[20%] h-screen bg-g-red-600 drop-shadow-2xl ">
+      <aside className="w-[22%] 2xl:w-[20%] max-h-max bg-g-red-600">
          <div className="w-full h-full flex flex-col">
             <div className="h-[10%] 2xl:h-[8%] flex justify-center items-center">
                <Link href={"/admin"} >
@@ -47,7 +51,7 @@ export function Sidebar() {
                      <Link href={"/admin/register/worker"} >
                         <SidebarButton
                            label="Funcionário"
-                           icon={<IoIosHammer size={25} />} />
+                           icon={<FaPersonDigging size={25} />} />
                      </Link>
                      <Link href={"/admin/register/product"} >
                         <SidebarButton
@@ -57,7 +61,7 @@ export function Sidebar() {
                      <Link href={"/admin/register/workspace"} >
                         <SidebarButton
                            label="Célula"
-                           icon={<LiaIndustrySolid size={25} />}
+                           icon={<MdOutlineConstruction size={25} />}
                         />
 
                      </Link>
@@ -73,11 +77,11 @@ export function Sidebar() {
                {relatoriosOpen && (
                   <>
                      <Link href={"/admin/report/workspace-report"} >
-                        <SidebarButton label="Células" icon={<LiaIndustrySolid size={25} />} />
+                        <SidebarButton label="Células" icon={<MdOutlineConstruction size={25} />} />
                      </Link>
 
                      <Link href={"/admin/report/worker-report"} >
-                        <SidebarButton label="Funcionários" icon={<IoIosHammer size={25} />} />
+                        <SidebarButton label="Funcionários" icon={<FaPersonDigging size={25} />} />
                      </Link>
 
                      <Link href={"/admin/report/product-report"} >
@@ -91,6 +95,14 @@ export function Sidebar() {
                   </>
                )}
             </section>
+            <div className="h-14 py-4 mb-5 flex gap-5 justify-center items-center text-white bg-slate-800 hover:cursor-pointer hover:scale-105" onClick={logout} >
+
+               <IoIosLogOut
+                  size={30}
+               />
+               <p className="text-xl font-bold" >Sair</p>
+
+            </div>
          </div>
       </aside>
    );

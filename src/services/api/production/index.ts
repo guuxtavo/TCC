@@ -1,33 +1,15 @@
 import { Worker } from "@/types/Worker"
 import { api } from '../axiosConfig'
 import { CustomError } from "@/types/Error";
-import { Product } from "@/types/Product";
+import { Production } from "@/types/Production";
 
-// export type RegisterProduct= {
-//       nome: string;
-//       login: string;
-//       password: string
-//       classificacao: string;
-//       cargo: string;  
-//       role?: string;
-//       dataNascimento: string,    
-// }
 
 interface IAuth {
-   data: Product
+   data: Production
 }
 
-// interface ErrorResponse {
-//    response: {
-//      data?: {
-//        errors?: {
-//          default?: string;
-//        };
-//      };
-//    };
-//  }
 
-const registerProduct = async (productData: Product): Promise<IAuth> => {
+const registerProduction = async (productData: Production): Promise<IAuth> => {
    try {
       const { data } = await api.post('/produtos', productData);
 
@@ -50,11 +32,11 @@ const registerProduct = async (productData: Product): Promise<IAuth> => {
    }
 };
 
-const getAllProducts = async (): Promise<Product[]> => {
+const getAllProductions = async (): Promise<Production[]> => {
 
 
    try {
-      const response = await api.get('/produtos');
+      const response = await api.get('/producao');
       const data = response.data;
 
 
@@ -78,6 +60,6 @@ const getAllProducts = async (): Promise<Product[]> => {
    }
 }
 
-export const ProductService = {
-   registerProduct, getAllProducts
+export const ProductionService = {
+   registerProduction, getAllProductions
 }

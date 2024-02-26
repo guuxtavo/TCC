@@ -120,7 +120,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
    const handleLogin = useCallback(async (user: User, token: string) => {
 
-
+      console.log("Entrou no handleLogin: Primeiro Acesso? " + user?.primeiroAcesso)
       localStorage.setItem(LOCAL_STORAGE_KEY__ACCESS_TOKEN, token)
       localStorage.setItem(LOCAL_STORAGE_KEY__USER_ID, JSON.stringify(user.id))
       localStorage.setItem(LOCAL_STORAGE_KEY__USER_NOME, JSON.stringify(user.nome))
@@ -139,6 +139,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       setLogin(user.login);
       setIsFirstAccess(user.primeiroAcesso)
       setIsloggedin(true);
+
+      
 
    }, []);
 
@@ -171,118 +173,3 @@ const useAuth = () => {
 
 
 export { AuthProvider, AuthContext, useAuth }
-
-
-
-
-
-
-
-
-// "use client";
-
-// import { User } from "@/types/User";
-// import { useCallback, useContext, useEffect, useState } from "react";
-// import { createContext } from "react";
-// import { useRouter } from 'next/navigation';
-// import { api } from "@/services/api/axiosConfig";
-
-// // Objeto com as chaves do armazenamento local
-// const LOCAL_STORAGE_KEYS = {
-//   USER: 'APP_USER',
-//   ACCESS_TOKEN: 'APP_ACCESS_TOKEN',
-// };
-
-// type AuthContextProps = {
-//    user: User | undefined,
-//    token: string | undefined,
-//    isLoggedIn: boolean,
-//    loading: boolean,
-//    handleLogin: (user: User, token: string) => void;
-//    logout: () => void;
-// }
-
-// // criação do contexto
-// const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
-
-// const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-//    const router = useRouter();
-//    const [isLoggedIn, setIsloggedin] = useState(false)
-//    const [token, setToken] = useState<string | undefined>("");
-//    const [user, setUser] = useState<User | undefined>();
-//    const [loading, setLoading] = useState(true);
-
-//    useEffect(() => {
-//       const loadLocalStorage = () => {
-//          const storedUser = localStorage.getItem(LOCAL_STORAGE_KEYS.USER);
-//          const storedToken = localStorage.getItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
-
-//          return { storedUser, storedToken };
-//       };
-
-//       const { storedUser, storedToken } = loadLocalStorage();
-
-//       if (storedToken && storedUser) {
-//          const parsedUser = JSON.parse(storedUser) as User;
-
-//          api.defaults.headers.Authorization = `Bearer ${storedToken}`;
-
-//          setUser(parsedUser);
-//          setToken(storedToken);
-//          setIsloggedin(true);
-//       }
-
-//       setLoading(false);
-//    }, []);
-
-//    const logout = () => {
-//       localStorage.removeItem(LOCAL_STORAGE_KEYS.USER);
-//       localStorage.removeItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN);
-   
-//       setUser(undefined);
-//       setToken(undefined);
-//       setIsloggedin(false);
-//       api.defaults.headers.Authorization = null;
-//       router.push("/");
-//    };
-
-//    const handleLogin = useCallback(async (user: User, token: string) => {
-//       const userData = {
-//          id: user.id,
-//          nome: user.nome,
-//          login: user.login,
-//          role: user.role,
-//          cargo: user.cargo
-//       };
-
-//       localStorage.setItem(LOCAL_STORAGE_KEYS.USER, JSON.stringify(userData));
-//       localStorage.setItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, token);
-
-//       api.defaults.headers.Authorization = `Bearer ${token}`;
-
-//       setUser(userData);
-//       setToken(token);
-//       setIsloggedin(true);
-//    }, []);
-
-//    return (
-//       <AuthContext.Provider
-//          value={{
-//             user,
-//             token,
-//             isLoggedIn,
-//             loading,
-//             handleLogin,
-//             logout
-//          }}>
-//          {children}
-//       </AuthContext.Provider>
-//    );
-// };
-
-// const useAuth = () => {
-//    const context = useContext(AuthContext);
-//    return context;
-// }
-
-// export { AuthProvider, AuthContext, useAuth };

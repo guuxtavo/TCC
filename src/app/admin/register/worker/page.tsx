@@ -1,20 +1,20 @@
 "use client"
 
-import { Container } from "../../../../components/container";
 import { GrUserWorker } from "react-icons/gr";
-import Input from "../../../../components/input";
 import { Button } from "../../../../components/button";
+import { Container } from "../../../../components/container";
+import Input from "../../../../components/input";
 // React Hook Form
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { yupResolver } from '@hookform/resolvers/yup'
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from "react-hook-form";
 
 // Yup
-import { Worker } from "@/types/Worker";
-import { useEffect, useState } from "react";
-import { workerValidationSchema } from "@/validations/workerValidations";
+import { ModalMessage } from "@/components/messageModal";
 import { WorkerService } from "@/services/api/worker";
 import { CustomError } from "@/types/Error";
-import { ModalMessage } from "@/components/ModalMessage";
+import { Worker } from "@/types/Worker";
+import { workerValidationSchema } from "@/validations/workerValidations";
+import { useEffect, useState } from "react";
 
 export default function RegisterWorker() {
 
@@ -53,8 +53,6 @@ export default function RegisterWorker() {
       try {
          setLoading(true);
 
-         console.log("Chegou no worker: " + data)
-
          const formData = {
             nome: data.nome,
             login: data.login,  // ou algo semelhante dependendo da sua lógica
@@ -70,11 +68,10 @@ export default function RegisterWorker() {
 
          console.log("Resposta da API no onSubmit: ", response)
 
-
          if (response) {
             setShowModalMessage(true)
             setModalType("success")
-            setMessage("Funcionário Cadastrado com Sucesso")
+            setMessage("Funcionário cadastrado com sucesso")
          }
 
 
@@ -136,7 +133,7 @@ export default function RegisterWorker() {
                   <div className="h-1 bg-slate-800 w-2/4 border"></div>
                </div>
 
-               <section className="grid grid-cols-2 gap-y-6 gap-x-16 w-full" >
+               <section className="grid grid-cols-2 gap-y-5 gap-x-16 w-full" >
 
                   <Input
                      error={errors.nome}
@@ -179,7 +176,7 @@ export default function RegisterWorker() {
                            <select
                               id="cargo"
                               {...field}
-                              className="h-16 w-2/4 rounded-lg text-gray-600 text-xl font-semibold bg-slate-50 border drop-shadow-md border-slate-400 outline-none"
+                              className="px-3 appearance-none h-16 w-2/4 rounded-lg text-black-700 text-xl font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95"
                            >
                               <option value="">Selecione</option>
                               {isAdmin ? (
@@ -193,7 +190,7 @@ export default function RegisterWorker() {
                                     <option value="Armador">Armador</option>
                                     <option value="Final">Final</option>
                                     <option value="Encosteiro">Encosteiro</option>
-                                    <option value="Acenteiro">Acenteiro</option>
+                                    <option value="Assenteiro">Assenteiro</option>
                                  </>
                               )}
                            </select>
@@ -201,14 +198,29 @@ export default function RegisterWorker() {
                      />
                      {errors.cargo && <span className="text-red-600 text-base font-bold">{errors.cargo.message}</span>}
                   </div>
-                  <Input
-                     error={errors.classificacao}
-                     register={register}
-                     type="text"
-                     name="classificacao"
-                     placeholder="Selecione"
-                     label="Classificação"
-                     width="2/4" />
+
+                  <div className="flex flex-col gap-2">
+                     <label className="text-xl font-bold block mb-2" htmlFor="cargo">
+                        Classificação
+                     </label>
+                     <Controller
+                        control={control}
+                        name="classificacao"
+                        render={({ field }) => (
+                           <select
+                              id="classificacao"
+                              {...field}
+                              className="px-3 appearance-none h-16 w-2/4 rounded-lg text-gray-700 text-xl font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95"
+                           >
+                              <option value="">Selecione</option>
+                              <option value="Profissional">Profissional</option>
+                              <option value="Aprendiz">Aprendiz</option>
+                              {/* Adicione outras opções de cargo específicas para administradores */}
+                           </select>
+                        )}
+                     />
+                     {errors.classificacao && <span className="text-red-600 text-base font-bold">{errors.classificacao.message}</span>}
+                  </div>
 
                </section>
 

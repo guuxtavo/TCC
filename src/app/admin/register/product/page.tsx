@@ -11,7 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ProductService } from "@/services/api/product";
 import { useEffect, useState } from "react";
 import { CustomError } from "@/types/Error";
-import { ModalMessage } from "@/components/ModalMessage";
+import { ModalMessage } from "@/components/messageModal";
 
 const RegisterProduct = () => {
 

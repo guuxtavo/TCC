@@ -10,7 +10,7 @@ interface IAuth {
 
 type AllWorkspaces = {
    numero: number;
-   status?: string | undefined;
+   status: string | undefined;
    funcionario_armador: Worker;
    funcionario_acenteiro: Worker;
    funcionario_encosteiro: Worker;
@@ -31,7 +31,6 @@ const registerWorkspace = async (workspaceData: WorkspaceRegister): Promise<IAut
       const { data } = await api.post('/celulas', workspaceData);
 
       if (data) {
-         console.log(data);
          return data;
       }
 
@@ -78,6 +77,9 @@ const getAllWorkspaces = async (): Promise<AllWorkspaces[]> => {
       const response = await api.get(`/celulas`);
       const data = response.data;
 
+      console.log("Response na função: " + response)
+      console.log("Data na função: " + data)
+
       return data;
    } catch (error: any) {
       console.error(error);
@@ -93,6 +95,8 @@ const getAllWorkspaces = async (): Promise<AllWorkspaces[]> => {
       throw { message: 'Erro ao obter lista de funcionários.' } as CustomError;
    }
 }
+
+
 
 export const WorkspaceService = {
    registerWorkspace, getAvailableWorkspace, getAllWorkspaces

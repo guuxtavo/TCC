@@ -2,7 +2,7 @@
 
 import worker1 from '@/../public/worker1.jpg';
 import worker2 from '@/../public/worker2.jpg';
-import { ModalMessage } from "@/components/ModalMessage";
+import { ModalMessage } from "@/components/messageModal";
 import Input from "@/components/input";
 import { CustomError } from "@/types/Error";
 import { Workspace } from "@/types/Workspace";
@@ -72,7 +72,7 @@ const RegisterWorkspace = () => {
          if (response) {
             setShowModalMessage(true)
             setModalType("success")
-            setMessage("Célula Cadastrado com Sucesso")
+            setMessage("Célula Cadastrada com Sucesso")
          }
 
       } catch (error: unknown) {
@@ -106,7 +106,7 @@ const RegisterWorkspace = () => {
 
          <form onSubmit={handleSubmit(handleFormSubmit)} >
 
-            <div className="w-full flex items-center mb-8 justify-between" >
+            <div className="w-full flex mb-8 justify-between" >
                <div className="w-fit flex gap-8 ml-4" >
                   <h1 className="text-4xl 2xl:text-5xl font-bold" >Célula</h1>
                   <GiHammerNails size={35} />
@@ -128,7 +128,7 @@ const RegisterWorkspace = () => {
             <div className="2xl:w-[90%] h-fit ml-3 2xl:ml-10 flex flex-col gap-8" >
 
                <div>
-                  <p className="font-bold text-2xl italic w-fit" >Digite o nome dos tapeceiros que trabalham nessa célula</p>
+                  <p className="font-bold text-2xl italic w-fit" >Selecione os tapeceiros que trabalharão nessa célula</p>
                </div>
 
 
@@ -141,7 +141,7 @@ const RegisterWorkspace = () => {
                   <div className="flex items-center gap-4">
                      <Image quality={100} priority={true} width={80} height={40} alt="Imagem do trabalhador"
                         src={worker2} />
-                     <WorkerSelect workers={availableWorkspace?.funcionarioAcenteiro ?? []} cargo="Acenteiro" name="funcionario2" register={register} error={errors.funcionario2} />
+                     <WorkerSelect workers={availableWorkspace?.funcionarioAcenteiro ?? []} cargo="Assenteiro" name="funcionario2" register={register} error={errors.funcionario2} />
                   </div>
                   <div className="flex items-center gap-4">
                      <Image quality={100} priority={true} width={80} height={40} alt="Imagem do trabalhador"

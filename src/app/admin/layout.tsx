@@ -1,7 +1,7 @@
 import { HeaderAdmin } from "./components/header";
 import { Sidebar } from "./components/sidebar";
 import Image from "next/image";
-import MascoteImg from "../../../public/Mascote_Hellen-removebg-preview.png"
+import MascoteImg from "../../../public/Mascote_Hellen-virada-esquerda.png"
 import { Metadata } from "next";
 
 
@@ -24,9 +24,9 @@ const HomeAdminLayout = ({ children }: { children: React.ReactNode }) => {
               {children}
 
             <Image
-              className="transform -rotate-12 absolute bottom-0 right-0 z-10 overflow-hidden"
+              className="transform absolute bottom-0 -right-8 z-0 overflow-hidden"
               src={MascoteImg}
-              height={250}
+              height={170}
               width={180}
               quality={100}
               alt="Imagem do mascote Hellen"
