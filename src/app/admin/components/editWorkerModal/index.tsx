@@ -10,12 +10,12 @@ import { WorkerService } from "@/services/api/worker";
 import { workerValidationSchema } from "@/validations/workerValidations";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CustomError } from "@/types/Error";
-import { ModalMessage } from "../messageModal";
+import { ModalMessage } from "../../../../components/messageModal";
 
 
 type editModalProps = {
    registerData: Worker | undefined;
-   isOpen: boolean,
+   isOpen?: boolean,
    onClose: () => void,
    // updateData: (workers: Worker[]) => void,
    // editedWorker: Worker[],
@@ -29,13 +29,13 @@ const obterDataAtual = (type: string) => {
 
    if (type === 'min') {
       return `${ano - 100}-${mes}-${dia}`;
-   } else{
+   } else {
       return `${ano - 18}-${mes}-${dia}`;
    }
 
 };
 
-const EditModal = ({ registerData, onClose }: editModalProps) => {
+const EditWorkerModal = ({ registerData, onClose }: editModalProps) => {
    const { handleSubmit, formState: { errors }, setValue, register, reset, control } = useForm<Worker>({ resolver: yupResolver(workerValidationSchema) });
 
    const [showModalMessage, setShowModalMessage] = useState(false);
@@ -75,6 +75,7 @@ const EditModal = ({ registerData, onClose }: editModalProps) => {
    const onSubmit = async (data: Worker) => {
 
       try {
+         const celulaId = data.celula ? data.celula.id : null;
          const workerData = {
             id: data.id,
             nome: data.nome,
@@ -83,8 +84,8 @@ const EditModal = ({ registerData, onClose }: editModalProps) => {
             dataNascimento: data.dataNascimento,
             cargo: data.cargo,
             role: data.role ? "ADMIN" : "USER",
-            celula: data.celula !== null ? {
-               id: data.celula?.id
+            celula: celulaId != null ? {
+               id: celulaId
             } : null
          }
 
@@ -139,8 +140,6 @@ const EditModal = ({ registerData, onClose }: editModalProps) => {
          )}
 
          <div className="fixed top-0 left-0 w-full h-full bg-transparent/50 flex justify-center items-center z-10" >
-
-
 
             <div className="h-[70%] w-[45%] 2xl:h-[60%] bg-slate-50 flex flex-col justify-between p-4 drop-shadow-md rounded-md animate-slide-down">
 
@@ -206,74 +205,87 @@ const EditModal = ({ registerData, onClose }: editModalProps) => {
                         <label
                            className="text-lg font-bold w-fit"
                            htmlFor="dataNascimento">Data Nascimento</label>
-                        <input
-                           id="dataNascimento"
-                           {...register('dataNascimento')}
-                           max={obterDataAtual('max')}
-                           min={obterDataAtual('min')}
-                           onChange={handleChange}
-                           value={formData.dataNascimento}
-                           className="border-2 outline-none p-2 rounded-md bg-slate-50 w-max"
-                           type="date"
-                        />
-                        {errors.dataNascimento && <span className="text-red-500 text-sm font-semibold" >{errors.dataNascimento.message}</span>}
+                        <div className="flex gap-1 items-center" >
+                           <input
+                              id="dataNascimento"
+                              {...register('dataNascimento')}
+                              max={obterDataAtual('max')}
+                              min={obterDataAtual('min')}
+                              onChange={handleChange}
+                              value={formData.dataNascimento}
+                              className={`border-2 outline-none p-2 rounded-md bg-slate-50 w-max ${errors.dataNascimento ? 'border-red-500' : ''}`}
+                              type="date"
+                           />
+                           {errors.dataNascimento && <MdErrorOutline color="red" size={25} />}
+
+
+                        </div>
 
                      </div>
 
                      <div className="flex flex-col gap-2" >
                         <label
-                           className="text-lg font-bold w-fit"
+                           className={`text-lg font-bold w-fit ${registerData?.celula != null ? 'text-slate-400/50' : ''} `}
                            htmlFor="cargo">Cargo</label>
+                        <div className="flex gap-1 items-center" >
+                           <Controller
+                              control={control}
+                              name="cargo"
+                              render={({ field }) => (
+                                 <select
+                                    disabled={registerData?.celula != null ? true : false}
+                                    id="cargo"
+                                    {...field}
+                                    className={`appearance-none border-2 outline-none p-2 rounded-md bg-slate-50 w-3/4   ${errors.cargo ? 'border-red-500' : ''} `}
+                                 >
+                                    <option value="">Selecione</option>
+                                    {registerData?.role === 'ADMIN' ? (
+                                       <>
+                                          <option value="RH">RH</option>
+                                          <option value="Gerente">Gerente</option>
+                                       </>
+                                    ) : (
+                                       <>
+                                          <option value="Armador">Armador</option>
+                                          <option value="Final">Final</option>
+                                          <option value="Encosteiro">Encosteiro</option>
+                                          <option value="Assenteiro">Assenteiro</option>
+                                       </>
+                                    )}
+                                 </select>
+                              )}
+                           />
+                           {errors.cargo && <MdErrorOutline color="red" size={25} />}
+                        </div>
 
-                        <Controller
-                           control={control}
-                           name="cargo"
-                           render={({ field }) => (
-                              <select
-                                 id="cargo"
-                                 {...field}
-                                 className="appearance-none border-2 outline-none p-2 rounded-md bg-slate-50 w-3/4"
-                              >
-                                 <option value="">Selecione</option>
-                                 {registerData?.role === 'ADMIN' ? (
-                                    <>
-                                       <option value="RH">RH</option>
-                                       <option value="Gerente">Gerente</option>
-                                    </>
-                                 ) : (
-                                    <>
-                                       <option value="Armador">Armador</option>
-                                       <option value="Final">Final</option>
-                                       <option value="Encosteiro">Encosteiro</option>
-                                       <option value="Assenteiro">Assenteiro</option>
-                                    </>
-                                 )}
-                              </select>
-                           )}
-                        />
-                        {errors.cargo && <span className="text-red-600 text-sm font-semibold">{errors.cargo.message}</span>}
+
+
                      </div>
 
                      <div className="flex flex-col gap-2" >
                         <label
                            className="text-lg font-bold w-fit"
                            htmlFor="classificacao">Classificação</label>
-                        <Controller
-                           control={control}
-                           name="classificacao"
-                           render={({ field }) => (
-                              <select
-                                 id="classificacao"
-                                 {...field}
-                                 className="appearance-none border-2 outline-none p-2 rounded-md bg-slate-50 w-3/4"
-                              >
-                                 <option value="">Selecione</option>
-                                 <option value="Profissional">Profissional</option>
-                                 <option value="Aprendiz">Aprendiz</option>
-                              </select>
-                           )}
-                        />
-                        {errors.classificacao && <span className="text-red-600 text-sm font-semibold">{errors.classificacao.message}</span>}
+                        <div className="flex gap-1 items-center" >
+                           <Controller
+                              control={control}
+                              name="classificacao"
+                              render={({ field }) => (
+                                 <select
+                                    id="classificacao"
+                                    {...field}
+                                    className={`appearance-none border-2 outline-none p-2 rounded-md bg-slate-50 w-3/4 ${errors.classificacao ? 'border-red-500' : ''}  `}
+                                 >
+                                    <option value="">Selecione</option>
+                                    <option value="Profissional">Profissional</option>
+                                    <option value="Aprendiz">Aprendiz</option>
+                                 </select>
+                              )}
+                           />
+                           {errors.classificacao && <MdErrorOutline color="red" size={25} />}
+                        </div>
+
+
 
                      </div>
 
@@ -296,4 +308,4 @@ const EditModal = ({ registerData, onClose }: editModalProps) => {
 
 }
 
-export default EditModal;
+export default EditWorkerModal;

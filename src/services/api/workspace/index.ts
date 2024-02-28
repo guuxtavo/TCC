@@ -8,11 +8,21 @@ interface IAuth {
    data: WorkspaceRegister;
 }
 
-type AllWorkspaces = {
+export type EditWorkspace = {
+   id?: number;
+   numero: number;
+   status: string | undefined;
+   funcionario_armador: number;
+   funcionario_assenteiro: number;
+   funcionario_encosteiro: number;
+   funcionario_final: number;
+}
+
+export type AllWorkspaces = {
    numero: number;
    status: string | undefined;
    funcionario_armador: Worker;
-   funcionario_acenteiro: Worker;
+   funcionario_assenteiro: Worker;
    funcionario_encosteiro: Worker;
    funcionario_final: Worker;
 }
@@ -21,7 +31,7 @@ type WorkspaceRegister = {
    numero: number;
    status?: string | undefined;
    funcionario_armador: number;
-   funcionario_acenteiro: number;
+   funcionario_assenteiro: number;
    funcionario_encosteiro: number;
    funcionario_final: number;
 }
@@ -77,10 +87,12 @@ const getAllWorkspaces = async (): Promise<AllWorkspaces[]> => {
       const response = await api.get(`/celulas`);
       const data = response.data;
 
-      console.log("Response na função: " + response)
-      console.log("Data na função: " + data)
+      if (data) {
+         return data;
+      }
 
-      return data;
+      throw new Error('Erro ao capturar células disponíveis.');
+
    } catch (error: any) {
       console.error(error);
 
@@ -96,8 +108,32 @@ const getAllWorkspaces = async (): Promise<AllWorkspaces[]> => {
    }
 }
 
+const editWorkspace = async (workerData: EditWorkspace): Promise<Workspace> => {
+   try {
+      console.log("Entrou no edit worker: " + JSON.stringify(workerData))
+      const response = await api.put(`/celulas/${workerData.id}`, workerData);
+      const data = response.data;
+
+      if (data) {
+         return data;
+      }
+
+      throw new Error('Erro ao editar célula.');
+   } catch (error: any) {
+      if (error.response?.status === 400) {
+         const customError = {
+            message: error.response.data,
+            status: 400,
+         } as CustomError;
+         throw customError;
+      }
+
+      throw { message: 'Erro ao editar célula.' } as CustomError;
+   }
+}
+
 
 
 export const WorkspaceService = {
-   registerWorkspace, getAvailableWorkspace, getAllWorkspaces
+   registerWorkspace, getAvailableWorkspace, getAllWorkspaces, editWorkspace
 };

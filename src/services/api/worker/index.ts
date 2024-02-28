@@ -128,6 +128,32 @@ const editWorker = async (workerData: EditWorker): Promise<Worker> => {
    }
 }
 
+const deleteWorker = async (worker: Worker) => {
+   try {
+      console.log("Entrou no deleteWorker")
+      const response = await api.delete(`/funcionarios/${worker.id}`)
+      console.log("Response :" + response )
+      const data = response.data
+
+      if (data) {
+         return data
+      }
+
+   } catch (error: any) {
+      if (error.response?.status === 400) {
+         const customError = {
+            message: error.response.data,
+            status: 400,
+         } as CustomError;
+         throw customError;
+      }
+
+      throw { message: 'Erro ao excluir funcionário.' } as CustomError;
+   }
+}
+
+
+
 export const WorkerService = {
-   registerWorker, getWorkersID, getAllWorkers, editWorker
+   registerWorker, getWorkersID, getAllWorkers, editWorker, deleteWorker
 }

@@ -120,7 +120,6 @@ const RegisterProduct = () => {
                 Tipo
               </label>
               <div className="w-fit flex gap-4 items-center">
-                {/* Utilizamos o Controller para os radio buttons */}
                 <Controller
                   control={control}
                   name="tipo"

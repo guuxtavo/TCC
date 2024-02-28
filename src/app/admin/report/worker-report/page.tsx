@@ -1,44 +1,79 @@
 "use client"
 
-import EditModal from "@/components/editModal";
+import EditWorkerModal from "@/app/admin/components/editWorkerModal";
 import { WorkerService } from "@/services/api/worker";
 import { Worker } from "@/types/Worker";
+import { format } from 'date-fns';
 import { useState } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { TiEdit } from "react-icons/ti";
 import ReactPaginate from "react-paginate";
 import { useQuery } from "react-query";
 import Search from "../../components/search";
-import { format } from 'date-fns';
+import ConfirmModal from "@/components/confirmModal";
 
 const WorkerReport = () => {
 
    const [currentPage, setCurrentPage] = useState(0);
-   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
+   const [isEditWorkerModalOpen, setIsEditWorkerModalOpen] = useState<boolean>(false);
    const [selectedWorker, setSelectedWorker] = useState<Worker>();
+   const [isConfirmDeleteModalOpen, setIsConfirmDeleteModalOpen] = useState(false);
+   const [searchText, setSearchText] = useState<string>("");
+   const { data: workers = [], refetch } = useQuery(['workers'], () => WorkerService.getAllWorkers());
 
-   const openEditModal = (worker: Worker) => {
+   const getPaginatedData = () => {
+      const offset = currentPage * workersPerPage;
+      return workers.slice(offset, offset + workersPerPage);
+   };
+
+   const filteredWorkers = Array.isArray(workers)
+      ? workers.filter(worker =>
+         searchText.toLowerCase().split(" ").every(part =>
+            worker.nome?.toLowerCase().includes(part)
+         )
+      )
+      : [];
+
+   const handleChange = (searchText: string) => {
+      setSearchText(searchText);
+      setCurrentPage(0); // Resetando a página ao alterar a pesquisa
+   };
+
+   const openEditWorkerModal = (worker: Worker) => {
       setSelectedWorker(worker);
-      setIsEditModalOpen(true);
+      setIsEditWorkerModalOpen(true);
 
    };
 
-   const closeEditModal = () => {
+   const closeEditWorkerModal = () => {
       refetch();
       setSelectedWorker(undefined)
-      setIsEditModalOpen(false)
+      setIsEditWorkerModalOpen(false)
    };
 
-   const workersPerPage = 7; // Número de funcionários por página
+   const openConfirmDeleteModal = (worker: Worker) => {
+      setSelectedWorker(worker)
+      setIsConfirmDeleteModalOpen(true)
+   }
 
-   const { data: workers = [], refetch } = useQuery(['workers'], () => WorkerService.getAllWorkers());
+   const closeConfirmDeleteModal = () => {
+      refetch()
+      setIsConfirmDeleteModalOpen(false)
+   }
+
+   const workersPerPage = 6; // Número de funcionários por página
+
 
    const offset = currentPage * workersPerPage;
    const currentWorkers = Array.isArray(workers) ? workers.slice(offset, offset + workersPerPage) : [];
 
-   const pageCount = Math.ceil(workers.length / workersPerPage);
+   const pageCount = Math.ceil(filteredWorkers.length / workersPerPage);
+
    const handlePageClick = ({ selected: selectedPage }: { selected: number }) => {
-      setCurrentPage(selectedPage);
+      const newOffset = selectedPage * workersPerPage;
+      if (newOffset < filteredWorkers.length) {
+         setCurrentPage(selectedPage);
+      }
    };
 
    const formatDateISOToUTC = (dateISO: any) => {
@@ -53,14 +88,23 @@ const WorkerReport = () => {
 
       <div className="h-full w-full flex flex-col items-center gap-6">
 
+         {isConfirmDeleteModalOpen && (
+            <ConfirmModal<Worker>
+               deleteData={selectedWorker}
+               text="Deseja excluir esse item ?"
+               onClose={closeConfirmDeleteModal}
+               onDelete={WorkerService.deleteWorker}
+            />
+         )}
+
          {
-            isEditModalOpen && <EditModal isOpen={isEditModalOpen} onClose={closeEditModal} registerData={selectedWorker} />
+            isEditWorkerModalOpen && <EditWorkerModal onClose={closeEditWorkerModal} registerData={selectedWorker} />
          }
 
          <div className="flex flex-col gap-2 w-[90%] h-fit 2xl:h-fit 2xl:w-[90%] py-2 px-5 mt-4 bg-white rounded-lg drop-shadow-md animate-slide-down duration-800 ease-in-out" >
             <div className="flex items-center justify-between px-2" >
                <h1 className="font-bold text-3xl" >Funcionários</h1>
-               <Search placeholder="Pesquisar o nome" />
+               <Search placeholder="Pesquisar o nome" onChange={handleChange} />
             </div>
          </div>
 
@@ -78,10 +122,9 @@ const WorkerReport = () => {
                </thead>
                <tbody>
 
-                  {currentWorkers?.map((worker, index) => (
+                  {filteredWorkers.slice(offset, offset + workersPerPage).map((worker, index) => (
                      <tr key={index}
-                        onClick={() => openEditModal(worker)}
-                        className="border-b border-slate-300 transition duration-300 ease-in-out hover:bg-slate-300/60 hover:cursor-pointer" >
+                        className="border-b border-slate-300 transition duration-300 ease-in-out hover:bg-slate-300/60" >
                         <td className="px-6 py-3 whitespace-nowrap text-md font-bold text-gray-600 text-left">{worker?.nome}</td>
                         <td className="px-6 py-3 whitespace-nowrap text-md font-bold text-gray-600">{worker?.cargo}</td>
                         <td className="px-6 py-3 whitespace-nowrap text-md font-bold text-gray-600 ">{worker?.dataNascimento ? format(formatDateISOToUTC(worker.dataNascimento), 'dd/MM/yyyy') : ''}</td>
@@ -89,9 +132,11 @@ const WorkerReport = () => {
                         <td className="px-6 py-3 whitespace-nowrap text-md font-bold text-gray-600">{worker?.celula?.numero == null ? "Indefinida" : worker?.celula?.numero}</td>
                         <td className="px-6 py-3 whitespace-nowrap text-md font-bold text-gray-600 "><div className="flex gap-4 justify-center items-center" >
                            <button
-                              onClick={() => openEditModal(worker)}
+                              onClick={() => openEditWorkerModal(worker)}
                               className="py-1 px-4 border bg-yellow-400 rounded-lg font-bold hover:cursor-pointer " ><TiEdit size={25} /></button>
-                           <button className="py-1 px-4 border bg-red-500 rounded-lg font-bold"><FaRegTrashAlt size={25} /></button>
+                           <button
+                              onClick={() => openConfirmDeleteModal(worker)}
+                              className="py-1 px-4 border bg-red-500 rounded-lg font-bold"><FaRegTrashAlt size={25} /></button>
                         </div></td>
 
                      </tr>

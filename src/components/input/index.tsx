@@ -1,5 +1,6 @@
 import { FieldError, UseFormRegister } from "react-hook-form";
 import InputMask from 'react-input-mask';
+import { MdErrorOutline } from "react-icons/md";
 
 type InputProps = {
   name: string,
@@ -36,26 +37,31 @@ const Input = ({ placeholder, label, width, type, name, register, error }: Input
         </label>
       )}
       {type === 'cpf' ? (
-        <InputMask
-          id={name}
-          mask="999.999.999-99"  // Defina a máscara desejada
-          maskChar={""}
-          placeholder={placeholder}
-          className={`p-3 w-${width} h-16 rounded-lg text-xl text-black font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95`}
-          {...register(name)}
-        />
+        <div className="flex gap-1 items-center" >
+          <InputMask
+            id={name}
+            mask="999.999.999-99"  // Defina a máscara desejada
+            maskChar={""}
+            placeholder={placeholder}
+            className={`p-3 w-${width} h-16 rounded-lg text-xl text-black font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95 ${error ? "border-red-500" : ''} `}
+            {...register(name)}
+          />
+          {error && <MdErrorOutline color="red" size={25} />}
+        </div>
       ) : (
-        <input
-          id={name}
-          placeholder={placeholder}
-          type={type}
-          max={obterDataAtual('max')}
-          min={obterDataAtual('min')}
-          className={`p-3 w-${width} h-16 rounded-lg text-xl text-black font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95`}
-          {...register(name)}
-        />
+        <div className="flex gap-1 items-center" >
+          <input
+            id={name}
+            placeholder={placeholder}
+            type={type}
+            max={obterDataAtual('max')}
+            min={obterDataAtual('min')}
+            className={`p-3 w-${width} h-16 rounded-lg text-xl text-black font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95  ${error ? "border-red-500" : ''}`}
+            {...register(name)}
+          />
+          {error && <MdErrorOutline color="red" size={25} />}
+        </div>
       )}
-      {error && <span className="text-red-600 text-base font-bold">{error?.message}</span>}
     </div>
   );
 };

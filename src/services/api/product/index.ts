@@ -78,6 +78,53 @@ const getAllProducts = async (): Promise<Product[]> => {
    }
 }
 
+const editProduct = async (productData: Product): Promise<Worker> => {
+   try {
+      console.log("Entrou no edit worker: " + JSON.stringify(productData))
+      const response = await api.put(`/produtos/${productData.id}`, productData);
+      const data = response.data;
+
+      if (data) {
+         return data;
+      }
+
+      throw new Error('Erro ao editar funcionário.');
+   } catch (error: any) {
+      if (error.response?.status === 400) {
+         const customError = {
+            message: error.response.data,
+            status: 400,
+         } as CustomError;
+         throw customError;
+      }
+
+      throw { message: 'Erro ao editar produto.' } as CustomError;
+   }
+}
+
+const deleteProduct = async (product: Product) => {
+   try {
+      console.log("Entrou na exclusão de produto");
+      const response = await api.delete(`/produtos/${product.id}`)
+      const data = response.data
+
+      if (data) {
+         return data
+      }
+
+   } catch (error: any) {
+      if (error.response?.status === 400) {
+         const customError = {
+            message: error.response.data,
+            status: 400,
+         } as CustomError;
+         throw customError;
+      }
+
+      throw { message: 'Erro ao excluir produto.' } as CustomError;
+   }
+}
+
 export const ProductService = {
-   registerProduct, getAllProducts
+   registerProduct, getAllProducts, editProduct, deleteProduct
 }

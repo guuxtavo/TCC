@@ -7,6 +7,7 @@ import Input from "../../../../components/input";
 // React Hook Form
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Controller, useForm } from "react-hook-form";
+import { MdErrorOutline } from "react-icons/md";
 
 // Yup
 import { ModalMessage } from "@/components/messageModal";
@@ -169,57 +170,63 @@ export default function RegisterWorker() {
                      <label className="text-xl font-bold block mb-2" htmlFor="cargo">
                         Cargo
                      </label>
-                     <Controller
-                        control={control}
-                        name="cargo"
-                        render={({ field }) => (
-                           <select
-                              id="cargo"
-                              {...field}
-                              className="px-3 appearance-none h-16 w-2/4 rounded-lg text-black-700 text-xl font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95"
-                           >
-                              <option value="">Selecione</option>
-                              {isAdmin ? (
-                                 <>
-                                    <option value="RH">RH</option>
-                                    <option value="Gerente">Gerente</option>
-                                    {/* Adicione outras opções de cargo específicas para administradores */}
-                                 </>
-                              ) : (
-                                 <>
-                                    <option value="Armador">Armador</option>
-                                    <option value="Final">Final</option>
-                                    <option value="Encosteiro">Encosteiro</option>
-                                    <option value="Assenteiro">Assenteiro</option>
-                                 </>
-                              )}
-                           </select>
-                        )}
-                     />
-                     {errors.cargo && <span className="text-red-600 text-base font-bold">{errors.cargo.message}</span>}
+                     <div className="flex gap-1 items-center">
+                        <Controller
+                           control={control}
+                           name="cargo"
+                           render={({ field }) => (
+                              <select
+                                 id="cargo"
+                                 {...field}
+                                 className={`px-3 appearance-none h-16 w-2/4 rounded-lg text-black-700 text-xl font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95 ${errors.cargo ? 'border-red-500' : ''} `}
+                              >
+                                 <option value="">Selecione</option>
+                                 {isAdmin ? (
+                                    <>
+                                       <option value="RH">RH</option>
+                                       <option value="Gerente">Gerente</option>
+                                       {/* Adicione outras opções de cargo específicas para administradores */}
+                                    </>
+                                 ) : (
+                                    <>
+                                       <option value="Armador">Armador</option>
+                                       <option value="Final">Final</option>
+                                       <option value="Encosteiro">Encosteiro</option>
+                                       <option value="Assenteiro">Assenteiro</option>
+                                    </>
+                                 )}
+                              </select>
+                           )}
+                        />
+                        {errors.cargo && <MdErrorOutline color="red" size={25} />}
+                     </div>
                   </div>
 
                   <div className="flex flex-col gap-2">
                      <label className="text-xl font-bold block mb-2" htmlFor="cargo">
                         Classificação
                      </label>
-                     <Controller
-                        control={control}
-                        name="classificacao"
-                        render={({ field }) => (
-                           <select
-                              id="classificacao"
-                              {...field}
-                              className="px-3 appearance-none h-16 w-2/4 rounded-lg text-gray-700 text-xl font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95"
-                           >
-                              <option value="">Selecione</option>
-                              <option value="Profissional">Profissional</option>
-                              <option value="Aprendiz">Aprendiz</option>
-                              {/* Adicione outras opções de cargo específicas para administradores */}
-                           </select>
-                        )}
-                     />
-                     {errors.classificacao && <span className="text-red-600 text-base font-bold">{errors.classificacao.message}</span>}
+                     <div className="flex gap-1 items-center" >
+                        <Controller
+                           control={control}
+                           name="classificacao"
+                           render={({ field }) => (
+                              <select
+                                 id="classificacao"
+                                 {...field}
+                                 className={`px-3 appearance-none h-16 w-2/4 rounded-lg text-gray-700 text-xl font-semibold bg-slate-50 border-2 drop-shadow-sm outline-none transition-all duration-300 hover:scale-95 ${errors.classificacao ? 'border-red-500' : ''} `}
+                              >
+                                 <option value="">Selecione</option>
+                                 <option value="Profissional">Profissional</option>
+                                 <option value="Aprendiz">Aprendiz</option>
+                                 {/* Adicione outras opções de cargo específicas para administradores */}
+                              </select>
+                           )}
+                        />
+                        {errors.cargo && <MdErrorOutline color="red" size={25} />}
+                     </div>
+
+
                   </div>
 
                </section>

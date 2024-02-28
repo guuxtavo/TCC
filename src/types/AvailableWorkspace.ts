@@ -8,7 +8,7 @@ export type AvailableWorkspace = {
       id: number,
       nome: string
    }[],
-   funcionarioAcenteiro: {
+   funcionarioAssenteiro: {
       id: number,
       nome: string
    }[],

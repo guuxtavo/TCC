@@ -1,7 +1,7 @@
 "use client"
 
-import worker1 from '@/../public/worker1.jpg';
-import worker2 from '@/../public/worker2.jpg';
+import worker1 from '@/../public/worker1-removebg-preview.png';
+import worker2 from '@/../public/worker2-removebg-preview.png';
 import { ModalMessage } from "@/components/messageModal";
 import Input from "@/components/input";
 import { CustomError } from "@/types/Error";
@@ -25,8 +25,7 @@ const RegisterWorkspace = () => {
    const [showModalMessage, setShowModalMessage] = useState(false);
    const [modalType, setModalType] = useState('');
    const [message, setMessage] = useState('');
-   const { data: availableWorkspace } = useQuery(['workers'], () => WorkspaceService.getAvailableWorkspace());
-   console.log(availableWorkspace)
+   const { data: availableWorkspace, refetch } = useQuery(['workers'], () => WorkspaceService.getAvailableWorkspace());
    useEffect(() => {
       // Mostra a mensagem de sucesso por 3 segundos após o cadastro bem-sucedido
       if (showModalMessage) {
@@ -49,7 +48,7 @@ const RegisterWorkspace = () => {
          if (availableWorkspace?.numerosIndisponiveis.includes(data.numero)) {
             setShowModalMessage(true)
             setModalType("error")
-            setMessage("Numero já cadastrado!")
+            setMessage("Célula já cadastrada!")
             console.log(availableWorkspace?.numerosIndisponiveis)
             return;
          }
@@ -60,7 +59,7 @@ const RegisterWorkspace = () => {
             status: "Ativa",
             funcionario_final: data.funcionario4,
             funcionario_armador: data.funcionario1,
-            funcionario_acenteiro: data.funcionario2,
+            funcionario_assenteiro: data.funcionario2,
             funcionario_encosteiro: data.funcionario3,
          };
 
@@ -72,6 +71,7 @@ const RegisterWorkspace = () => {
          if (response) {
             setShowModalMessage(true)
             setModalType("success")
+            refetch()
             setMessage("Célula Cadastrada com Sucesso")
          }
 
@@ -141,7 +141,7 @@ const RegisterWorkspace = () => {
                   <div className="flex items-center gap-4">
                      <Image quality={100} priority={true} width={80} height={40} alt="Imagem do trabalhador"
                         src={worker2} />
-                     <WorkerSelect workers={availableWorkspace?.funcionarioAcenteiro ?? []} cargo="Assenteiro" name="funcionario2" register={register} error={errors.funcionario2} />
+                     <WorkerSelect workers={availableWorkspace?.funcionarioAssenteiro ?? []} cargo="Assenteiro" name="funcionario2" register={register} error={errors.funcionario2} />
                   </div>
                   <div className="flex items-center gap-4">
                      <Image quality={100} priority={true} width={80} height={40} alt="Imagem do trabalhador"

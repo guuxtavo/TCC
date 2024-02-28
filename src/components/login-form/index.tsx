@@ -66,7 +66,7 @@ export function FormLogin() {
          const { cpf, senha } = formData;
          const response = await AuthService.auth(cpf, senha);
 
-         console.log("Response do login : " + response)
+         console.log("Response do login : " + JSON.stringify(response))
 
          if (response instanceof Error) {
             setShowModalMessage(true)

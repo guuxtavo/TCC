@@ -1,6 +1,4 @@
-import { WorkerService } from '@/services/api/worker';
 import { FieldError, UseFormRegister } from 'react-hook-form';
-import { useQuery } from 'react-query';
 
 type WorkerSelectProps = {
   workers: { id: number, nome: string }[]
